@@ -224,3 +224,109 @@ class BinarySearchTree {
 		}
 	}
 }
+
+class MyString {
+	constructor(string) {
+		this.string = string
+	}
+	get length() {
+		let sum = 0
+		let arr = this.string.split("")
+		for (let i = 0; i < arr.length; i++) {
+			sum++
+		}
+		return sum
+	}
+	toString() {
+		return this.string
+	}
+	valueOf() {
+		return this.string
+	}
+	charAt(index) {
+		if (index > -1 && index < this.length) {
+			return this.string.split("")[index]
+		} else {
+			return undefined
+		}
+	}
+	concat(str) {
+		let result = this.string.split("")
+		let temp = str.split("")
+		for (let i = 0; i < temp.length; i++) {
+			result.push(temp[i])
+		}
+		return result.join("")
+	}
+	slice(start, end) {
+		let arr = this.string.split("")
+		let res = []
+		if (start >= 0 && end < arr.length && end > 0) {
+			for (var i = start; i < end; i++) {
+				res.push(arr[i])
+			}
+		} else if (
+			start >= 0 &&
+			(end >= arr.length || end < 0 || end == undefined)
+		) {
+			for (var i = start; i < arr.length; i++) {
+				res.push(arr[i])
+			}
+		} else if (start < 0 && end == undefined) {
+			for (var i = arr.length + start; i < arr.length; i++) {
+				res.push(arr[i])
+			}
+		}
+
+		return res.join("")
+	}
+}
+
+function extend(child, parent) {
+	var F = function() {}
+	F.prototype = parent.prototype
+	child.prototype = new F()
+	child.prototype.contructor = child
+	child.uber = parent.prototype
+}
+
+// 原型继承
+function Shape() {}
+Shape.prototype.name = "Shape"
+Shape.prototype.toString = function() {
+	return this.constructor.uber
+		? this.constructor.uber.toString() + "," + this.name
+		: this.name
+}
+
+function TwoShape() {}
+extend(TwoShape, Shape)
+
+TwoShape.prototype.name = "2D shape"
+
+function Triangle(side, height) {
+	this.side = side
+	this.height = height
+}
+
+extend(Triangle, TwoShape)
+
+Triangle.prototype.name = "Triangle"
+Triangle.prototype.getArea = function() {
+	return this.side * this.height / 2
+}
+
+// deepCopy
+function deepCopy(p, c = {}) {
+	for (let i in p) {
+		if (p.hasOwnProperty(i)) {
+			if (typeof p[i] === "object") {
+				c[i] = Array.isArray(p[i]) ? [] : {}
+				deepCopy(p[i], c[i])
+			} else {
+				c[i] = p[i]
+			}
+		}
+	}
+	return c
+}
