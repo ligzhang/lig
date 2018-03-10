@@ -17,7 +17,7 @@ devServer:{
           changeOrigin: true
         },
         '/Admin/*': {
-          target: 'http://hrm-test.yb.paic.com.cn/index.php?s=/',
+          target: 'http://***/',
           secure: false,
           changeOrigin: true
         }
