@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="../libs/react.js"></script>
+  <script src="../libs/react-dom.js"></script>
+  <script src="../libs/browser.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+  // 默认 组件名首字母为大写，小写则不能解析
+class Welcome extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+		return (
+			<h1>
+				Hello {this.props.user.firstName} {this.props.user.lastName}
+			</h1>
+		)
+	}
+}
+
+ReactDOM.render(
+	<Welcome user={{ firstName: "Harper", lastName: "Perez" }} />,
+	document.querySelector("#app")
+)
+
+// const user = {firstName:'Harper',lastName:'Perez'}
+// ReactDOM.render(<Welcome user={user}/>, document.querySelector("#app"))
+</script>
+
+</body>
+
+</html>

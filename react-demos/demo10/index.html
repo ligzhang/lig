@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+  <script src="../libs/react.js"></script>
+  <script src="../libs/react-dom.js"></script>
+  <script src="../libs/browser.min.js"></script>
+  <script src="../libs/axios.min.js"></script>
+  <link rel="stylesheet" href="./index.css">
+
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    class UserInfo extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			user: [],
+			name: "",
+			url: ""
+		}
+		this.handleClick = this.handleClick.bind(this)
+		this.handleDelete = this.handleDelete.bind(this)
+		this.handleChangeName = this.handleChangeName.bind(this)
+		this.handleChangeUrl = this.handleChangeUrl.bind(this)
+	}
+	fetchData() {
+		axios.get("http://localhost:3030/userInfo").then(res => {
+			this.setState({
+				user: res.data
+			})
+		})
+		console.log(111)
+	}
+	handleChangeName(e) {
+		this.setState({
+			name: e.target.value
+		})
+	}
+	handleChangeUrl(e) {
+		this.setState({
+			url: e.target.value
+		})
+	}
+	handleDelete(e) {
+		console.log(e.target.getAttribute("data-index"))
+		let id = e.target.getAttribute("data-index")
+		axios
+			.post("http://localhost:3030/userInfoDelete", { _id: id })
+			.then(res => {
+				if (res.data.success === true) {
+					alert(res.data.msg)
+				}
+				this.fetchData()
+			})
+			.catch(err => {
+				alert(err.data.msg)
+			})
+	}
+	handleClick() {
+		console.log(this.state.name, this.state.url)
+		let postData = {
+			name: this.state.name,
+			url: this.state.url
+		}
+		axios
+			.post("http://localhost:3030/userInfo", { ...postData })
+			.then(res => {
+				console.log(res)
+				if (res.data.success === true) {
+					alert(res.data.msg)
+				}
+				this.fetchData()
+				this.state.name = ""
+				this.state.url = ""
+			})
+			.catch(err => {
+				alert(err.data.msg)
+			})
+	}
+	componentDidMount() {
+		this.fetchData()
+	}
+	render() {
+		let newName = this.state.name
+		let newUrl = this.state.url
+		return (
+			<div>
+				<ul>
+					{this.state.user.map(item => {
+						return (
+							<li key={item._id}>
+								<span className={"r"}>Name: {item.name}, </span>
+								<span className={"r"}>Url: {item.url}</span>
+								<span>
+									<button data-index={item._id} onClick={this.handleDelete}>
+										删除
+									</button>
+								</span>
+							</li>
+						)
+					})}
+				</ul>
+				<div>
+					输入Name、Url进行添加操作
+					<ul>
+						<li>
+							<span className={"sr"}>
+								Name:<input
+									type="text"
+									name="name"
+									value={newName}
+									placeholder="输入名称"
+									onChange={this.handleChangeName}
+								/>
+							</span>
+							<span className={"sr"}>
+								Url:<input
+									type="text"
+									name="url"
+									value={newUrl}
+									placeholder="输入地址"
+									onChange={this.handleChangeUrl}
+								/>
+							</span>
+							<span className={"sr"}>
+								<input type="button" value="提交" onClick={this.handleClick} />
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		)
+	}
+}
+ReactDOM.render(<UserInfo />, document.querySelector("#app"))
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,9 @@
+.r {
+	display: inline-block;
+	width: 200px;
+	margin-right: 100px;
+}
+.sr {
+	display: inline-block;
+	margin-right: 10px;
+}
