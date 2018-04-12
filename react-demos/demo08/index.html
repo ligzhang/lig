@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="../libs/react.js"></script>
+  <script src="../libs/react-dom.js"></script>
+  <script src="../libs/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    class Hello extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			opacity: 1
+		}
+	}
+	componentWillMount() {
+		console.log("componentWillMount")
+	}
+	componentWillReceiveProps(nextProps) {}
+	shouldComponentUpdate(nextProps, nextState) {}
+	componentDidMount() {
+		console.log("componentDidMount")
+		this.timer = setInterval(() => {
+			let opacity = this.state.opacity
+			opacity -= 0.05
+			if (opacity < 0.1) {
+				opacity = 1
+			}
+			this.setState({
+				opacity
+			})
+		}, 100)
+	}
+	componentWillUpdate(nextProps, nextState) {}
+	componentDidUpdate(nextProps, nextState) {
+		console.log("componentDidUpdate")
+	}
+	componentWillUnmount() {
+		alert("componentWillUnmount")
+	}
+	render() {
+		return (
+			<div style={{ opacity: this.state.opacity }}>
+				<h1>Hello {this.props.name}</h1>
+			</div>
+		)
+	}
+}
+ReactDOM.render(<Hello name={"world"} />, document.querySelector("#app"))
+</script>
+
+  </body>
+</html>

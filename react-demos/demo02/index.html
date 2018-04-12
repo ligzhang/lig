@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="../libs/react.js"></script>
+  <script src="../libs/react-dom.js"></script>
+  <script src="../libs/browser.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+
+
+  <script type="text/babel">
+  const user = {
+	firstName: "Harper",
+	lastName: "Perez"
+}
+// var let
+
+function formatName(user) {
+	return user.firstName + " " + user.lastName
+}
+
+const element = <h1>Hello, {formatName(user)}!</h1>
+
+ReactDOM.render(element, document.querySelector("#app"))
+</script>
+
+</body>
+
+</html>

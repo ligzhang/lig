@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <script src="../libs/react.js"></script>
+  <script src="../libs/react-dom.js"></script>
+  <script src="../libs/browser.min.js"></script>
+  <style media="screen">
+  body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .header {
+    font-size: 22px;
+    font-weight: bolder;
+    margin-bottom: 10px;
+  }
+  .changeColor{
+    color: red;
+  }
+  li {
+    list-style: none;
+  }
+    span {
+      display: inline-block;
+      width: 130px;
+    }
+    img {
+      margin-right: 20px;
+    }
+
+  </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+    // http://10.131.68.156:3030/homework
+let data = [
+	{
+		category: "Sporting Goods",
+		price: "$49.99",
+		stocked: true,
+		name: "Football"
+	},
+	{
+		category: "Sporting Goods",
+		price: "$9.99",
+		stocked: true,
+		name: "Baseball"
+	},
+	{
+		category: "Sporting Goods",
+		price: "$29.99",
+		stocked: false,
+		name: "Basketball"
+	},
+	{
+		category: "Electronics",
+		price: "$99.99",
+		stocked: true,
+		name: "iPod Touch"
+	},
+	{
+		category: "Electronics",
+		price: "$399.99",
+		stocked: false,
+		name: "iPhone 5"
+	},
+	{
+		category: "Electronics",
+		price: "$199.99",
+		stocked: true,
+		name: "Nexus 7"
+	}
+]
+/**
+ * FilterableProductTable (orange): contains the entirety of the example
+ * SearchBar (blue): receives all user input
+ * ProductTable (green): displays and filters the data collection based on user input
+ * ProductCategoryRow (turquoise): displays a heading for each category
+ * ProductRow (red): displays a row for each product
+ */
+
+class Homework extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			status: true
+		}
+		this.handleChange = this.handleChange.bind(this)
+	}
+	handleChange(e) {
+		console.log(e.target.getAttribute("src") == "./01.png")
+		var targetImg = e.target.getAttribute("src")
+		if (targetImg === "./01.png") {
+			this.setState({
+				status: true
+			})
+		} else {
+			this.setState({
+				status: false
+			})
+		}
+	}
+	render() {
+		return (
+			<div>
+				<h1
+					style={{ textAlign: "center" }}
+					className={!this.state.status ? "changeColor" : ""}
+				>
+					Homework
+				</h1>
+				<Img src={this.props.post.src} onChange={this.handleChange} />
+				<DataDetail data={this.props.post.data} />
+			</div>
+		)
+	}
+}
+class DataDetail extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+		console.log(this.props.data)
+		return (
+			<ul>
+				<li className={"header"}>
+					<span>Category</span>
+					<span>Name</span>
+					<span>Price</span>
+					<span>Stocked</span>
+				</li>
+				{this.props.data.map(item => (
+					<li key={JSON.stringify(item)}>
+						<span>{item.category}</span>
+						<span>{item.name}</span>
+						<span>{item.price}</span>
+						<span>{item.stocked ? "有货" : "缺货"}</span>
+					</li>
+				))}
+			</ul>
+		)
+	}
+}
+class Img extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+		return (
+			<div>
+				{this.props.src.map(item => (
+					<img key={item} src={item} onClick={this.props.onChange} />
+				))}
+			</div>
+		)
+	}
+}
+
+// 处理数据
+let post = {
+	data,
+	src: ["./01.png", "./02.png"]
+}
+ReactDOM.render(<Homework post={post} />, document.querySelector("#app"))
+</script>
+
+  </body>
+</html>
